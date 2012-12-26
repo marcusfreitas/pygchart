@@ -12,34 +12,6 @@ __version__ = '0.0.1'
 __author__ = 'Vinicius Freitas'
 
 
-# Exception Classes
-# -----------------------------------------------------------------------------
-
-
-class PyGoogleChartException(Exception):
-    pass
-
-
-class NoDataGivenException(PyGoogleChartException):
-    pass
-
-
-class InvalidParametersException(PyGoogleChartException):
-    pass
-
-
-class BadContentTypeException(PyGoogleChartException):
-    pass
-
-
-class AbstractClassException(PyGoogleChartException):
-    pass
-
-
-class UnknownChartType(PyGoogleChartException):
-    pass
-
-
 # Data Classes
 # -----------------------------------------------------------------------------
 
@@ -93,12 +65,9 @@ class Data(object):
 
 class ChartHub(object):
     """"""
-    def __init__(self, charts_list, js_file_name):
+    def __init__(self, charts_list):
         assert(isinstance(charts_list, list))
-        if not js_file_name:
-            raise InvalidParametersException('js_file_name must be informed!')
         self.charts_list = charts_list
-        self.js_file_name = js_file_name
 
     def get_js_function(self):
         function_buffer = "function drawChart(){CONTENT_TOKEN}"
@@ -107,7 +76,9 @@ class ChartHub(object):
             content_buffer += "draw%sChart();" % chart.title        
         return function_buffer.replace("CONTENT_TOKEN", content_buffer)
 
-    def create_js_file(self):
+    def create_js_file(self, js_file_name):
+        if not js_file_name:
+            raise InvalidParametersException('js_file_name must be informed!')
         content_buffer = """
         // Load the Visualization API and the piechart package.
         google.load('visualization', '1.0', {'packages':['corechart']});
@@ -118,12 +89,14 @@ class ChartHub(object):
 
         content_buffer += self.get_js_function()
 
-        js_file = open(self.js_file_name, "w")
+        js_file = open(js_file_name, "w")
         js_file.write(content_buffer)
         js_file.close()
         return content_buffer
 
     def create_html_file(self, html_file_name):
+        if not html_file_name:
+            raise InvalidParametersException('html_file_name must be informed!')
         html_buffer = \
         """
         <!DOCTYPE html>
@@ -183,9 +156,10 @@ class Chart(object):
         return options_buffer
 
     def _set_chart(self):
-        chart_buffer = str("var chart = new google.visualization.%s \
-            (document.getElementById('%s')); chart.draw(data, options);") \
-        % (self.chart_type, self.target_div)
+        chart_buffer = "var chart = new google.visualization.%s" % \
+        self.chart_type + \
+            "(document.getElementById('%s')); chart.draw(data, options);" \
+        % self.target_div
         return chart_buffer
 
     def get_js_function(self):
@@ -215,42 +189,29 @@ class PieChart(Chart):
         self.chart_type = "PieChart"
 
 
-if __name__ == '__main__':
-
-    options = {'title': 'Total', 'height': 250, 'width': 400}
-    data = Data(['Apks', 'Count'], ['string', 'number'], {"Malicious": 2571, "Trusted": 3751})
-    bar_chart = BarChart('Totals', 'total_chart_div', data, options)
-
-    # options = {'title': 'Signature Efficiency', 'height': 250, 'width': 400}
-    # data = Data(['Apks', 'Count'], ['string', 'number'], {"Malicious": 0, "Classified": 2571})
-    # pie_chart = PieChart('SignatureEfficiency', 'sig_eff_div', data, options)
-
-    options = {'title': 'Heuristic Efficiency (Malicious Base)', 'height': 250, 'width': 400}
-    total_malicious = 2571
-    classified = 88 * total_malicious / 100
-    unclassified = total_malicious - classified
-    data = Data(['Apks', 'Count'], ['string', 'number'], {"Unclassified": unclassified, "Classified": classified})
-    heuri_mal_pie_chart = PieChart('HeuristicMaliciousEfficiency', 'heur_mal_div', data, options)
-
-    options = {'title': 'Heuristic Efficiency (Trusted Base)', 'height': 250, 'width': 400}
-    total_trusted = 3571
-    classified = 99 * total_trusted / 100
-    unclassified = total_trusted - classified
-    data = Data(['Apks', 'Count'], ['string', 'number'], {"Unclassified": unclassified, "Classified": classified})
-    heuri_tru_pie_chart = PieChart('HeuristicTrustedEfficiency', 'heur_tru_div', data, options)
-
-    charts = ChartHub(
-        [bar_chart, heuri_mal_pie_chart, heuri_tru_pie_chart],
-        'chart.js'
-        )
-    charts.create_js_file()
-    print charts.create_html_file('report.html')
-    
-        
-    
+# Exception Classes
+# -----------------------------------------------------------------------------
 
 
+class PyGoogleChartException(Exception):
+    pass
 
 
+class NoDataGivenException(PyGoogleChartException):
+    pass
 
-    
+
+class InvalidParametersException(PyGoogleChartException):
+    pass
+
+
+class BadContentTypeException(PyGoogleChartException):
+    pass
+
+
+class AbstractClassException(PyGoogleChartException):
+    pass
+
+
+class UnknownChartType(PyGoogleChartException):
+    pass
