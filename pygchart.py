@@ -73,7 +73,7 @@ class ChartHub(object):
         function_buffer = "function drawChart(){CONTENT_TOKEN}"
         content_buffer = ""
         for chart in self.charts_list:
-            content_buffer += "draw%sChart();" % chart.title        
+            content_buffer += "draw%sChart();" % chart.name        
         return function_buffer.replace("CONTENT_TOKEN", content_buffer)
 
     def create_js_file(self, js_file_name):
@@ -126,9 +126,9 @@ class ChartHub(object):
 
 class Chart(object):
     """"""
-    def __init__(self, title, target_div, data, chart_options):
-        if not title:
-            raise InvalidParametersException("title must be informed")
+    def __init__(self, name, target_div, data, chart_options):
+        if not name:
+            raise InvalidParametersException("name must be informed")
         if not target_div:
             raise InvalidParametersException("target_div must be informed")
         if type(data) != Data:
@@ -138,7 +138,7 @@ class Chart(object):
         if type(self) == Chart:
             raise AbstractClassException('This is an abstract class')
             
-        self.title = title
+        self.name = name
         self.target_div = target_div
         self.chart_type = ""
         self.data = data
@@ -163,7 +163,7 @@ class Chart(object):
         return chart_buffer
 
     def get_js_function(self):
-        function_buffer = "function draw%sChart(){CONTENT_TOKEN}" % self.title
+        function_buffer = "function draw%sChart(){CONTENT_TOKEN}" % self.name
         content_buffer = self._set_data(self.data.get_json_data())
         content_buffer += self._set_options(
             self.chart_options['title'],
@@ -177,15 +177,15 @@ class Chart(object):
 
 class BarChart(Chart):
     """"""
-    def __init__(self, title, target_div, data, chart_options):
-        Chart.__init__(self, title, target_div, data, chart_options)
+    def __init__(self, name, target_div, data, chart_options):
+        Chart.__init__(self, name, target_div, data, chart_options)
         self.chart_type = "BarChart"
 
 
 class PieChart(Chart):
     """"""
-    def __init__(self, title, target_div, data, chart_options):
-        Chart.__init__(self, title, target_div, data, chart_options)
+    def __init__(self, name, target_div, data, chart_options):
+        Chart.__init__(self, name, target_div, data, chart_options)
         self.chart_type = "PieChart"
 
 
