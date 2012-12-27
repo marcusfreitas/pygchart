@@ -1,7 +1,7 @@
 import os
 import shutil
 import unittest
-from pgchart import *
+from pygchart import *
 
 
 class TestPgChart(unittest.TestCase):
@@ -78,7 +78,7 @@ class TestPgChart(unittest.TestCase):
                 types_list=[Data.STRING, Data.NUMBER],
                 values_dict={'Brazil': 27, 'USA': 50}
             ) 
-        options = {'title': 'How many states', 'height': 250, 'width':300}
+        options = {'title': 'How many states', 'height': 250, 'width':400}
 
         bar_chart = BarChart(name='StatesNumber', target_div='states_div', 
             data=data, chart_options=options)

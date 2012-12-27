@@ -69,6 +69,18 @@ class ChartHub(object):
         assert(isinstance(charts_list, list))
         self.charts_list = charts_list
 
+    def _get_js_script_buffer(self):
+        content_buffer = \
+        "//Load the Visualization API and the piechart package.\n" + \
+        "google.load('visualization', '1.0', {'packages':['corechart']});\n" + \
+        "//Set a callback to run when the Google Visualization API is loaded.\n" + \
+        "google.setOnLoadCallback(drawChart);\n"
+        for chart in self.charts_list:
+            content_buffer += chart.get_js_function()
+
+        content_buffer += self.get_js_function()
+        return content_buffer
+
     def get_js_function(self):
         function_buffer = "function drawChart(){CONTENT_TOKEN}"
         content_buffer = ""
@@ -79,16 +91,8 @@ class ChartHub(object):
     def create_js_file(self, js_file_name):
         if not js_file_name:
             raise InvalidParametersException('js_file_name must be informed!')
-        content_buffer = """
-        // Load the Visualization API and the piechart package.
-        google.load('visualization', '1.0', {'packages':['corechart']});
-        // Set a callback to run when the Google Visualization API is loaded.
-        google.setOnLoadCallback(drawChart);\n"""
-        for chart in self.charts_list:
-            content_buffer += chart.get_js_function()
-
-        content_buffer += self.get_js_function()
-
+        
+        content_buffer = self._get_js_script_buffer()
         js_file = open(js_file_name, "w")
         js_file.write(content_buffer)
         js_file.close()
@@ -105,7 +109,11 @@ class ChartHub(object):
         <meta charset="utf-8">
         <title></title>
         <!-- Custom report generate -->
-        <script src="%s"></script>
+        <script type="text/javascript" src="https://www.google.com/jsapi">
+        </script>
+        <script type="text/javascript">
+        SCRIPT_TOKEN
+        </script>
         </head>
 
         <body>
@@ -115,8 +123,10 @@ class ChartHub(object):
         """
         content_buffer = ""
         for chart in self.charts_list:
-            content_buffer += "<div id=%s></div>" % (chart.target_div)
+            content_buffer += "<div id='%s'></div>" % (chart.target_div)
 
+        html_buffer = html_buffer.replace("SCRIPT_TOKEN", 
+            self._get_js_script_buffer())
         html_buffer = html_buffer.replace("CHARTS_DIV_TOKEN", content_buffer)
 
         html_file = open(html_file_name, "w")
