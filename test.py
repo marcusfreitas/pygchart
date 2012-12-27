@@ -72,6 +72,23 @@ class TestPgChart(unittest.TestCase):
         chart_hub.create_html_file('tmp/tmp.html')
         self.assertTrue(os.path.exists('tmp/tmp.html'))
 
+    def test_html(self):
+        data = Data(
+                columns_list=['Country', 'States'],
+                types_list=[Data.STRING, Data.NUMBER],
+                values_dict={'Brazil': 27, 'USA': 50}
+            ) 
+        options = {'title': 'How many states', 'height': 250, 'width':300}
+
+        bar_chart = BarChart(name='StatesNumber', target_div='states_div', 
+            data=data, chart_options=options)
+
+        chart_hub = ChartHub(charts_list=[bar_chart])
+
+        chart_hub.create_js_file('state_number_chart.js')
+
+        chart_hub.create_html_file('state_number_page.html')
+
 
 if __name__ == '__main__':
     unittest.main()
