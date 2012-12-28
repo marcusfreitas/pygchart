@@ -25,16 +25,16 @@ class Data(object):
     DATETIME = 'DateTime'
     TYPES = [STRING, NUMBER, DATE, DATETIME]
 
-    def __init__(self, columns_list, types_list, values_dict):
+    def __init__(self, columns_list, types_list, values_list):
         assert(isinstance(columns_list, list))
         assert(isinstance(types_list, list))
-        assert(isinstance(values_dict, dict))
+        assert(isinstance(values_list, list))
         for type_item in types_list:
             assert(type_item in Data.TYPES)
         
         self.columns = columns_list
         self.types = types_list
-        self.rows = values_dict
+        self.values = values_list
 
     def get_json_data(self):
         json_buffer = "{cols:[COLS_TOKEN], rows:[ROWS_TOKEN]}"
@@ -42,20 +42,31 @@ class Data(object):
         for x in xrange(0, len(self.columns)):
             tmp_buffer += "{id:'%s', label:'%s', type:'%s'}" % (self.columns[x], 
                 self.columns[x], self.types[x])
-            if x < len(self.columns):
+            if x + 1 < len(self.columns):
                 tmp_buffer += ","
         json_buffer = json_buffer.replace("COLS_TOKEN", tmp_buffer)
 
-        rows = self.rows.keys()
         tmp_buffer = ""
         count = 0
-        for row in rows:
-            tmp_buffer += "{c:[{v:'%s'},{v:%s}]}" % (row, self.rows[row])
+        for row_value in self.values:
+            tmp_buffer += "{c:["
+            value_count = 0
+            for value in row_value:
+                if isinstance(value, int):
+                    tmp_buffer += "{v:%d}" % value
+                elif isinstance(value, str):
+                    tmp_buffer += "{v:'%s'}" % value
+                else:
+                    tmp_buffer += "{v:'%s'}" % value
+                value_count += 1
+                if value_count < len(row_value):
+                    tmp_buffer += ","
+            tmp_buffer += "]}"
             count += 1
-            if count < len(rows):
+            if count < len(self.values):
                 tmp_buffer += ","
+        # tmp_buffer += "}"
         json_buffer = json_buffer.replace("ROWS_TOKEN", tmp_buffer)
-
         return json_buffer
 
 
@@ -147,6 +158,7 @@ class Chart(object):
             InvalidParametersException('chart_options must be informed')
         if type(self) == Chart:
             raise AbstractClassException('This is an abstract class')
+        assert(isinstance(chart_options, dict))
             
         self.name = name
         self.target_div = target_div
@@ -159,10 +171,12 @@ class Chart(object):
         % structure
         return data_buffer
 
-    def _set_options(self, title, height, width):
+    def _set_options(self):
         options_buffer = str(
-            "var options = {'title':'%s', 'width':%s, 'height': %s};") \
-        % (title, width, height)
+            "var options = {OPTIONS_TOKEN};")
+        # [1:-1] using that to remove unnacessary { }
+        tmp_buffer = json.dumps(self.chart_options)[1:-1] 
+        options_buffer = options_buffer.replace('OPTIONS_TOKEN', tmp_buffer)
         return options_buffer
 
     def _set_chart(self):
@@ -175,10 +189,7 @@ class Chart(object):
     def get_js_function(self):
         function_buffer = "function draw%sChart(){CONTENT_TOKEN}" % self.name
         content_buffer = self._set_data(self.data.get_json_data())
-        content_buffer += self._set_options(
-            self.chart_options['title'],
-            self.chart_options['height'],
-            self.chart_options['width'])
+        content_buffer += self._set_options()
         content_buffer += self._set_chart()
         function_buffer = function_buffer.replace("CONTENT_TOKEN", 
             content_buffer)
@@ -197,6 +208,14 @@ class PieChart(Chart):
     def __init__(self, name, target_div, data, chart_options):
         Chart.__init__(self, name, target_div, data, chart_options)
         self.chart_type = "PieChart"
+
+
+class ColumnChart(Chart):
+    """"""
+    def __init__(self, name, target_div, data, chart_options):
+        Chart.__init__(self, name, target_div, data, chart_options)
+        self.chart_type = "ColumnChart"
+        
 
 
 # Exception Classes
