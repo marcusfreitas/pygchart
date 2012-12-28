@@ -28,9 +28,12 @@ data = Data(
                 ]
             ) 
 options = {'title': 'Company Performance', 'height': 450, 'width':600}
+
 bar_chart = BarChart(name='CompPerform', target_div='comp_perf_bar_div', 
             data=data, chart_options=options)
 
 chart_hub = ChartHub(charts_list=[bar_chart])
+
 chart_hub.create_js_file('examples/bar_chart.js')
+
 chart_hub.create_html_file('examples/bar_chart.html')
