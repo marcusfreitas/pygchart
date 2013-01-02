@@ -31,7 +31,7 @@ PyGChart needs **Python 2.x** from **2.4 and later**.
     options = {'title': 'Company Performance', 'height': 450, 'width':600}
 
     bar_chart = BarChart(name='CompPerform', target_div='comp_perf_bar_div', 
-            data=data, chart_options=options)
+                         data=data, chart_options=options)
 
     chart_hub = ChartHub(charts_list=[bar_chart])
 
