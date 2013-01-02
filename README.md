@@ -27,6 +27,7 @@ data = Data(
                     ['2007',  1030,      540]
                 ]
             ) 
+            
 options = {'title': 'Company Performance', 'height': 450, 'width':600}
 
 bar_chart = BarChart(name='CompPerform', target_div='comp_perf_bar_div', 
