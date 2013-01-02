@@ -15,9 +15,9 @@ PyGChart needs **Python 2.x** from **2.4 and later**.
 
 #### Usage
 
-from pygchart import *
+    from pygchart import *
 
-data = Data(
+    data = Data(
                 columns_list=['Year', 'Sales', 'Expenses'],
                 types_list=[Data.STRING, Data.NUMBER, Data.NUMBER],
                 values_list=[
@@ -26,15 +26,15 @@ data = Data(
                     ['2006',  660,       1120],
                     ['2007',  1030,      540]
                 ]
-            ) 
+          ) 
             
-options = {'title': 'Company Performance', 'height': 450, 'width':600}
+    options = {'title': 'Company Performance', 'height': 450, 'width':600}
 
-bar_chart = BarChart(name='CompPerform', target_div='comp_perf_bar_div', 
-            data=data, chart_options=options)
+    bar_chart = BarChart(name='CompPerform', target_div='comp_perf_bar_div', 
+                         data=data, chart_options=options)
 
-chart_hub = ChartHub(charts_list=[bar_chart])
+    chart_hub = ChartHub(charts_list=[bar_chart])
 
-chart_hub.create_js_file('examples/bar_chart.js')
+    chart_hub.create_js_file('examples/bar_chart.js')
 
-chart_hub.create_html_file('examples/bar_chart.html')
+    chart_hub.create_html_file('examples/bar_chart.html')
