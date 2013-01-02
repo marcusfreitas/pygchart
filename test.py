@@ -134,6 +134,67 @@ class TestPgChart(unittest.TestCase):
         chart_hub.create_js_file('examples/column_chart.js')
         chart_hub.create_html_file('examples/column_chart.html')
 
+    def test_line_chart(self):
+        data = Data(
+                columns_list=['Year', 'Sales', 'Expenses'],
+                types_list=[Data.STRING, Data.NUMBER, Data.NUMBER],
+                values_list=[
+                    ['2004',  1000,      400],
+                    ['2005',  1170,      460],
+                    ['2006',  660,       1120],
+                    ['2007',  1030,      540]
+                ]
+            ) 
+        options = {'title': 'Company Performance', 'height': 500, 'width':900}
+        line_chart = LineChart(name='CompPerform', 
+            target_div='com_perf_line_div', 
+            data=data, chart_options=options)
+
+        chart_hub = ChartHub(charts_list=[line_chart])
+        chart_hub.create_js_file('examples/line_chart.js')
+        chart_hub.create_html_file('examples/line_chart.html')
+
+    def test_candle_stick_chart(self):
+        data = Data(columns_list=['Day', 'StickStart', 'StickEnd', 
+            'CandleStart', 'CandleEnd'],
+            types_list=[Data.STRING, Data.NUMBER, Data.NUMBER, Data.NUMBER,
+            Data.NUMBER],
+            values_list=[
+                ['Mon', 20,28, 38, 45],
+                ['Tue', 31, 38, 55, 66],
+                ['Wed', 50, 55, 77, 80],
+                ['Thu', 77, 77, 66, 50],
+                ['Fri', 68, 66, 22, 15]
+            ])
+        options = {'legend':'none', 'height': 500, 'width': 900}
+
+        candle_stick_chart = CandleStickChart(name="CandleStickChart",
+            target_div='cand_stick_chart_div', data=data, chart_options=options)
+
+        chart_hub = ChartHub(charts_list=[candle_stick_chart])
+        chart_hub.create_js_file('examples/candle_stick_chart.js')
+        chart_hub.create_html_file('examples/candle_stick_chart.html')
+
+    def test_area_chart(self):
+        data = Data(
+                columns_list=['Year', 'Sales', 'Expenses'],
+                types_list=[Data.STRING, Data.NUMBER, Data.NUMBER],
+                values_list=[
+                    ['2004',  1000,      400],
+                    ['2005',  1170,      460],
+                    ['2006',  660,       1120],
+                    ['2007',  1030,      540]
+                ]
+            ) 
+        options = {'title': 'Company Performance', 'height': 500, 'width':900}
+        area_chart = AreaChart(name='AreaCompPerform', 
+            target_div='com_perf_area_div', 
+            data=data, chart_options=options)
+
+        chart_hub = ChartHub(charts_list=[area_chart])
+        chart_hub.create_js_file('examples/area_chart.js')
+        chart_hub.create_html_file('examples/area_chart.html')
+
 
 if __name__ == '__main__':
     unittest.main()

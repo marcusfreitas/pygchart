@@ -8,7 +8,7 @@ https://github.com/vinyguitar/pygchart
 import os
 import json
 
-__version__ = '0.0.1'
+__version__ = '0.1.0'
 __author__ = 'Vinicius Freitas'
 
 
@@ -217,6 +217,26 @@ class ColumnChart(Chart):
         self.chart_type = "ColumnChart"
         
 
+class LineChart(Chart):
+    """"""
+    def __init__(self, name, target_div, data, chart_options):
+        Chart.__init__(self, name, target_div, data, chart_options)
+        self.chart_type = "LineChart"
+
+
+class AreaChart(Chart):
+    def __init__(self, name, target_div, data, chart_options):
+        Chart.__init__(self, name, target_div, data, chart_options)
+        self.chart_type = "AreaChart"
+        
+
+class CandleStickChart(Chart):
+    """"""
+    def __init__(self, name, target_div, data, chart_options):
+        Chart.__init__(self, name, target_div, data, chart_options)
+        self.chart_type = "CandlestickChart"
+        
+        
 
 # Exception Classes
 # -----------------------------------------------------------------------------
