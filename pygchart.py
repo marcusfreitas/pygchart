@@ -5,7 +5,6 @@ https://github.com/vinyguitar/pygchart
 
 """
 
-import os
 import json
 
 __version__ = '0.1.0'
@@ -23,7 +22,8 @@ class Data(object):
     NUMBER = 'number'
     DATE = 'date'
     DATETIME = 'DateTime'
-    TYPES = [STRING, NUMBER, DATE, DATETIME]
+    BOOLEAN = 'boolean'
+    TYPES = [STRING, NUMBER, DATE, DATETIME, BOOLEAN]
 
     def __init__(self, columns_list, types_list, values_list):
         assert(isinstance(columns_list, list))
@@ -31,7 +31,7 @@ class Data(object):
         assert(isinstance(values_list, list))
         for type_item in types_list:
             assert(type_item in Data.TYPES)
-        
+
         self.columns = columns_list
         self.types = types_list
         self.values = values_list
@@ -40,8 +40,8 @@ class Data(object):
         json_buffer = "{cols:[COLS_TOKEN], rows:[ROWS_TOKEN]}"
         tmp_buffer = ""
         for x in xrange(0, len(self.columns)):
-            tmp_buffer += "{id:'%s', label:'%s', type:'%s'}" % (self.columns[x], 
-                self.columns[x], self.types[x])
+            tmp_buffer += "{id:'%s', label:'%s', type:'%s'}" \
+            % (self.columns[x], self.columns[x], self.types[x])
             if x + 1 < len(self.columns):
                 tmp_buffer += ","
         json_buffer = json_buffer.replace("COLS_TOKEN", tmp_buffer)
@@ -56,6 +56,8 @@ class Data(object):
                     tmp_buffer += "{v:%d}" % value
                 elif isinstance(value, str):
                     tmp_buffer += "{v:'%s'}" % value
+                elif isinstance(value, float):
+                    tmp_buffer += "{v:%f}" % value
                 else:
                     tmp_buffer += "{v:'%s'}" % value
                 value_count += 1
@@ -65,7 +67,6 @@ class Data(object):
             count += 1
             if count < len(self.values):
                 tmp_buffer += ","
-        # tmp_buffer += "}"
         json_buffer = json_buffer.replace("ROWS_TOKEN", tmp_buffer)
         return json_buffer
 
@@ -96,13 +97,13 @@ class ChartHub(object):
         function_buffer = "function drawChart(){CONTENT_TOKEN}"
         content_buffer = ""
         for chart in self.charts_list:
-            content_buffer += "draw%sChart();" % chart.name        
+            content_buffer += "draw%sChart();" % chart.name
         return function_buffer.replace("CONTENT_TOKEN", content_buffer)
 
     def create_js_file(self, js_file_name):
         if not js_file_name:
             raise InvalidParametersException('js_file_name must be informed!')
-        
+
         content_buffer = self._get_js_script_buffer()
         js_file = open(js_file_name, "w")
         js_file.write(content_buffer)
@@ -136,7 +137,7 @@ class ChartHub(object):
         for chart in self.charts_list:
             content_buffer += "<div id='%s'></div>" % (chart.target_div)
 
-        html_buffer = html_buffer.replace("SCRIPT_TOKEN", 
+        html_buffer = html_buffer.replace("SCRIPT_TOKEN",
             self._get_js_script_buffer())
         html_buffer = html_buffer.replace("CHARTS_DIV_TOKEN", content_buffer)
 
@@ -144,6 +145,7 @@ class ChartHub(object):
         html_file.write(html_buffer)
         html_file.close()
         return html_buffer
+
 
 class Chart(object):
     """"""
@@ -159,7 +161,7 @@ class Chart(object):
         if type(self) == Chart:
             raise AbstractClassException('This is an abstract class')
         assert(isinstance(chart_options, dict))
-            
+
         self.name = name
         self.target_div = target_div
         self.chart_type = ""
@@ -175,7 +177,7 @@ class Chart(object):
         options_buffer = str(
             "var options = {OPTIONS_TOKEN};")
         # [1:-1] using that to remove unnacessary { }
-        tmp_buffer = json.dumps(self.chart_options)[1:-1] 
+        tmp_buffer = json.dumps(self.chart_options)[1:-1]
         options_buffer = options_buffer.replace('OPTIONS_TOKEN', tmp_buffer)
         return options_buffer
 
@@ -191,7 +193,7 @@ class Chart(object):
         content_buffer = self._set_data(self.data.get_json_data())
         content_buffer += self._set_options()
         content_buffer += self._set_chart()
-        function_buffer = function_buffer.replace("CONTENT_TOKEN", 
+        function_buffer = function_buffer.replace("CONTENT_TOKEN",
             content_buffer)
         return function_buffer
 
@@ -215,7 +217,7 @@ class ColumnChart(Chart):
     def __init__(self, name, target_div, data, chart_options):
         Chart.__init__(self, name, target_div, data, chart_options)
         self.chart_type = "ColumnChart"
-        
+
 
 class LineChart(Chart):
     """"""
@@ -228,20 +230,45 @@ class AreaChart(Chart):
     def __init__(self, name, target_div, data, chart_options):
         Chart.__init__(self, name, target_div, data, chart_options)
         self.chart_type = "AreaChart"
-        
+
 
 class CandleStickChart(Chart):
     """"""
     def __init__(self, name, target_div, data, chart_options):
         Chart.__init__(self, name, target_div, data, chart_options)
         self.chart_type = "CandlestickChart"
-        
-        
+
+
+class BubbleChart(Chart):
+    """"""
+    def __init__(self, name, target_div, data, chart_options):
+        Chart.__init__(self, name, target_div, data, chart_options)
+        self.chart_type = "BubbleChart"
+
+
+class ComboChart(Chart):
+    """"""
+    def __init__(self, name, target_div, data, chart_options):
+        Chart.__init__(self, name, target_div, data, chart_options)
+        self.chart_type = "ComboChart"
+
+
+class ScatterChart(Chart):
+    """"""
+    def __init__(self, name, target_div, data, chart_options):
+        Chart.__init__(self, name, target_div, data, chart_options)
+        self.chart_type = "ScatterChart"
+
+
+class SteppedAreaChart(Chart):
+    """"""
+    def __init__(self, name, target_div, data, chart_options):
+        Chart.__init__(self, name, target_div, data, chart_options)
+        self.chart_type = "SteppedAreaChart"
+
 
 # Exception Classes
 # -----------------------------------------------------------------------------
-
-
 class PyGoogleChartException(Exception):
     pass
 

@@ -195,6 +195,126 @@ class TestPgChart(unittest.TestCase):
         chart_hub.create_js_file('examples/area_chart.js')
         chart_hub.create_html_file('examples/area_chart.html')
 
+    def test_bubble_chart(self):
+        data = Data(
+                columns_list=['ID', 'Life Expectancy', 'Fertility Rate', 
+                'Region', 'Population'],
+                types_list=[Data.STRING, Data.NUMBER, Data.NUMBER, Data.STRING,
+                Data.NUMBER],
+                values_list=[
+                    ['CAN', 80.66, 1.67, 'North America', 33739900],
+                    ['DEU', 79.84, 1.36, 'Europe', 81902307],
+                    ['DNK', 78.6, 1.84, 'Europe', 5523095],
+                    ['EGY', 72.73, 2.78, 'Middle East', 79716203],
+                    ['GBR', 80.05, 2, 'Europe', 61801570],
+                    ['IRN', 72.49, 1.7, 'Middle East', 73137148],
+                    ['IRQ', 68.09, 4.77, 'Middle East', 31090763],
+                    ['ISR', 81.55, 2.96, 'Middle East', 7485600],
+                    ['RUS', 68.6, 1.54, 'Europe', 141850000],
+                    ['USA', 78.09, 2.05, 'North America', 307007000]
+                ])
+
+        options = {'title': 'Correlation between life expectancy, \
+        fertility rate and population of some world countries (2010)',
+        'hAxis':{'title': 'Life Expectancy'},
+        'vAxis':{'title': 'Fertility Rate'},
+        'bubble':{'textStyle': {'fontSize':11}},
+        'width': 900, 'height': 500
+        }
+
+        bubble_chart = BubbleChart(name='BubleLifeExpectancy', 
+            target_div='life_expec_bubble_div', 
+            data=data, chart_options=options)
+
+        chart_hub = ChartHub(charts_list=[bubble_chart])
+        chart_hub.create_js_file('examples/bubble_chart.js')
+        chart_hub.create_html_file('examples/bubble_chart.html')
+
+    def test_combo_chart(self):
+        data = Data(
+                columns_list=['Month', 'Bolivia', 'Ecuador', 'Madagascar',
+                'Papua New Guinea', 'Rwanda', 'Average'],
+                types_list=[Data.STRING, Data.NUMBER, Data.NUMBER, Data.NUMBER,
+                Data.NUMBER, Data.NUMBER, Data.NUMBER],
+                values_list=[
+                    ['2004/05', 165, 938, 522, 998, 450, 614.6],
+                    ['2005/06', 135, 1120, 599, 1268, 288, 682],
+                    ['2006/07', 157, 1167, 587, 807, 397, 623],
+                    ['2007/08', 139, 1110, 615, 968, 215, 609.4],
+                    ['2008/09', 136, 691, 629, 1026, 366, 569.6]
+                ]
+            )
+        options = {'title':'Montly Coffe Production by Country',
+        'vAxis':{'title':'Cups'},
+        'hAxis':{'title':'Month'},
+        'seriesType':"bars",
+        'series':{5:{'type':'line'}},
+        'width': 900, 'height': 500
+        }
+
+        combo_chart = ComboChart(name='ComboMontlyCoffeProduction', 
+            target_div='montly_coffe_combo_div', 
+            data=data, chart_options=options)
+
+        chart_hub = ChartHub(charts_list=[combo_chart])
+        chart_hub.create_js_file('examples/combo_chart.js')
+        chart_hub.create_html_file('examples/combo_chart.html')
+
+    def test_scatter_chart(self):
+        data = Data(
+                columns_list=['Age', 'Weight'],
+                types_list=[Data.NUMBER, Data.NUMBER],
+                values_list=[
+                    [ 8, 12],
+                    [ 4, 5.5],
+                    [ 11, 14],
+                    [ 4, 5],
+                    [ 3, 3.5],
+                    [ 6.5, 7]
+                ]
+            )
+        options = {'title':'Age vs. Weight comparison',
+        'vAxis':{'title':'Weight', 'minValue': 0, 'maxValue': 15},
+        'hAxis':{'title':'Age', 'minValue': 0, 'maxValue': 15},
+        'legend':"none",
+        'width': 900, 'height': 500
+        }
+
+        scatter_chart = ScatterChart(name='ScatterAgeWeight', 
+            target_div='age_weight_scatter_div', 
+            data=data, chart_options=options)
+
+        chart_hub = ChartHub(charts_list=[scatter_chart])
+        chart_hub.create_js_file('examples/scatter_chart.js')
+        chart_hub.create_html_file('examples/scatter_chart.html')
+
+    def test_stepped_area_chart(self):
+        data = Data(
+                columns_list=['Director (Year)', 'Rotten Tomatoes', 'IMDB'],
+                types_list=[Data.STRING, Data.NUMBER, Data.NUMBER],
+                values_list=[
+                    ['Alfred Hitchcock (1935)', 8.4, 7.9],
+                    ['Ralph Thomas (1959)', 6.9, 6.5],
+                    ['Don Sharp (1978)', 6.5, 6.4],
+                    ['James Hawes (2008)', 4.4, 6.2]
+                ]
+            )
+
+        options = {
+        'title':'Decline of \'The 39 Steps\'',
+        'vAxis': {'title':'Accumulated Rating'},
+        'isStacked': True,
+        'width': 900, 'height': 500
+        }
+
+        stepped_area_chart = SteppedAreaChart(name='SteppedDecline', 
+            target_div='decline_stepped_area_div', 
+            data=data, chart_options=options)
+
+        chart_hub = ChartHub(charts_list=[stepped_area_chart])
+        chart_hub.create_js_file('examples/stepped_area_chart.js')
+        chart_hub.create_html_file('examples/stepped_area_chart.html')
+
 
 if __name__ == '__main__':
     unittest.main()
