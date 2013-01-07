@@ -86,7 +86,8 @@ class TestPgChart(unittest.TestCase):
                 ]
             ) 
         options = {'title': 'Company Performance', 'height': 450, 'width':600}
-        self.bar_chart = BarChart(name='CompPerform', target_div='comp_perf_bar_div', 
+        self.bar_chart = BarChart(name='CompPerform', 
+            target_div='comp_perf_bar_div', 
             data=data, chart_options=options)
 
         chart_hub = ChartHub(charts_list=[self.bar_chart])
@@ -106,7 +107,8 @@ class TestPgChart(unittest.TestCase):
                 ]
             )
         options = {'title':'My Daily Activities'}
-        self.pie_chart = PieChart(name='DailyActivity', target_div='activity_div',
+        self.pie_chart = PieChart(name='DailyActivity', 
+            target_div='activity_div',
             data=data, chart_options=options)
 
         chart_hub = ChartHub(charts_list=[self.pie_chart])
