@@ -83,10 +83,22 @@ class ChartHub(object):
 
     def _get_js_script_buffer(self):
         content_buffer = \
-        "//Load the Visualization API and the piechart package.\n" + \
-        "google.load('visualization', '1.0', {'packages':['corechart']});\n" + \
-        "//Set a callback to run when the Google Visualization API is loaded.\n" + \
-        "google.setOnLoadCallback(drawChart);\n"
+        "//Load the Visualization API and the piechart package.\n \
+        google.load('visualization', '1.0', \
+            {'packages':[PACKAGECONTENT]});\n \
+        //Set a callback to run when the Google Visualization \
+        API is loaded.\n \
+        google.setOnLoadCallback(drawChart);\n"
+        package_content = ""
+        for i in range(0, len(self.charts_list)):
+            if not self.charts_list[i].chart_package in package_content:
+                package_content += "'%s'" % self.charts_list[i].chart_package
+                if i + 1 < len(self.charts_list):
+                    package_content += ", "
+
+        content_buffer = content_buffer.replace('PACKAGECONTENT', 
+            package_content)
+
         for chart in self.charts_list:
             content_buffer += chart.get_js_function()
 
@@ -167,6 +179,7 @@ class Chart(object):
         self.chart_type = ""
         self.data = data
         self.chart_options = chart_options
+        self.chart_package = 'corechart'
 
     def _set_data(self, structure):
         data_buffer = str('var data = new google.visualization.DataTable(%s);')\
@@ -262,9 +275,25 @@ class ScatterChart(Chart):
 
 class SteppedAreaChart(Chart):
     """"""
-    def __init__(self, name, target_div, data, chart_options):
+    def __init__(self, name, target_div, data, chart_options): 
         Chart.__init__(self, name, target_div, data, chart_options)
         self.chart_type = "SteppedAreaChart"
+
+
+class GaugeChart(Chart):
+    """"""
+    def __init__(self, name, target_div, data, chart_options): 
+        Chart.__init__(self, name, target_div, data, chart_options)
+        self.chart_type = "Gauge"
+        self.chart_package = 'gauge'
+
+
+class GeoChart(Chart):
+    def __init__(self, name, target_div, data, chart_options): 
+        Chart.__init__(self, name, target_div, data, chart_options)
+        self.chart_type = "GeoChart"
+        self.chart_package = 'geochart'
+        
 
 
 # Exception Classes

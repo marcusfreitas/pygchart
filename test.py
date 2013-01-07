@@ -86,10 +86,10 @@ class TestPgChart(unittest.TestCase):
                 ]
             ) 
         options = {'title': 'Company Performance', 'height': 450, 'width':600}
-        bar_chart = BarChart(name='CompPerform', target_div='comp_perf_bar_div', 
+        self.bar_chart = BarChart(name='CompPerform', target_div='comp_perf_bar_div', 
             data=data, chart_options=options)
 
-        chart_hub = ChartHub(charts_list=[bar_chart])
+        chart_hub = ChartHub(charts_list=[self.bar_chart])
         chart_hub.create_js_file('examples/bar_chart.js')
         chart_hub.create_html_file('examples/bar_chart.html')
 
@@ -106,10 +106,10 @@ class TestPgChart(unittest.TestCase):
                 ]
             )
         options = {'title':'My Daily Activities'}
-        pie_chart = PieChart(name='DailyActivity', target_div='activity_div',
+        self.pie_chart = PieChart(name='DailyActivity', target_div='activity_div',
             data=data, chart_options=options)
 
-        chart_hub = ChartHub(charts_list=[pie_chart])
+        chart_hub = ChartHub(charts_list=[self.pie_chart])
         chart_hub.create_js_file('examples/pie_chart.js')
         chart_hub.create_html_file('examples/pie_chart.html')
 
@@ -126,11 +126,11 @@ class TestPgChart(unittest.TestCase):
             ) 
         options = {'title': 'Company Performance', 'height': 450, 'width':600,
         'hAxis': {'title': 'Year', 'titleTextStyle': {'color': 'red'}}}
-        column_chart = ColumnChart(name='CompPerform', 
+        self.column_chart = ColumnChart(name='CompPerform', 
             target_div='com_perf_col_div', 
             data=data, chart_options=options)
 
-        chart_hub = ChartHub(charts_list=[column_chart])
+        chart_hub = ChartHub(charts_list=[self.column_chart])
         chart_hub.create_js_file('examples/column_chart.js')
         chart_hub.create_html_file('examples/column_chart.html')
 
@@ -146,11 +146,11 @@ class TestPgChart(unittest.TestCase):
                 ]
             ) 
         options = {'title': 'Company Performance', 'height': 500, 'width':900}
-        line_chart = LineChart(name='CompPerform', 
+        self.line_chart = LineChart(name='CompPerform', 
             target_div='com_perf_line_div', 
             data=data, chart_options=options)
 
-        chart_hub = ChartHub(charts_list=[line_chart])
+        chart_hub = ChartHub(charts_list=[self.line_chart])
         chart_hub.create_js_file('examples/line_chart.js')
         chart_hub.create_html_file('examples/line_chart.html')
 
@@ -168,10 +168,10 @@ class TestPgChart(unittest.TestCase):
             ])
         options = {'legend':'none', 'height': 500, 'width': 900}
 
-        candle_stick_chart = CandleStickChart(name="CandleStickChart",
+        self.candle_stick_chart = CandleStickChart(name="CandleStickChart",
             target_div='cand_stick_chart_div', data=data, chart_options=options)
 
-        chart_hub = ChartHub(charts_list=[candle_stick_chart])
+        chart_hub = ChartHub(charts_list=[self.candle_stick_chart])
         chart_hub.create_js_file('examples/candle_stick_chart.js')
         chart_hub.create_html_file('examples/candle_stick_chart.html')
 
@@ -187,11 +187,11 @@ class TestPgChart(unittest.TestCase):
                 ]
             ) 
         options = {'title': 'Company Performance', 'height': 500, 'width':900}
-        area_chart = AreaChart(name='AreaCompPerform', 
+        self.area_chart = AreaChart(name='AreaCompPerform', 
             target_div='com_perf_area_div', 
             data=data, chart_options=options)
 
-        chart_hub = ChartHub(charts_list=[area_chart])
+        chart_hub = ChartHub(charts_list=[self.area_chart])
         chart_hub.create_js_file('examples/area_chart.js')
         chart_hub.create_html_file('examples/area_chart.html')
 
@@ -222,11 +222,11 @@ class TestPgChart(unittest.TestCase):
         'width': 900, 'height': 500
         }
 
-        bubble_chart = BubbleChart(name='BubleLifeExpectancy', 
+        self.bubble_chart = BubbleChart(name='BubleLifeExpectancy', 
             target_div='life_expec_bubble_div', 
             data=data, chart_options=options)
 
-        chart_hub = ChartHub(charts_list=[bubble_chart])
+        chart_hub = ChartHub(charts_list=[self.bubble_chart])
         chart_hub.create_js_file('examples/bubble_chart.js')
         chart_hub.create_html_file('examples/bubble_chart.html')
 
@@ -252,11 +252,11 @@ class TestPgChart(unittest.TestCase):
         'width': 900, 'height': 500
         }
 
-        combo_chart = ComboChart(name='ComboMontlyCoffeProduction', 
+        self.combo_chart = ComboChart(name='ComboMontlyCoffeProduction', 
             target_div='montly_coffe_combo_div', 
             data=data, chart_options=options)
 
-        chart_hub = ChartHub(charts_list=[combo_chart])
+        chart_hub = ChartHub(charts_list=[self.combo_chart])
         chart_hub.create_js_file('examples/combo_chart.js')
         chart_hub.create_html_file('examples/combo_chart.html')
 
@@ -280,11 +280,11 @@ class TestPgChart(unittest.TestCase):
         'width': 900, 'height': 500
         }
 
-        scatter_chart = ScatterChart(name='ScatterAgeWeight', 
+        self.scatter_chart = ScatterChart(name='ScatterAgeWeight', 
             target_div='age_weight_scatter_div', 
             data=data, chart_options=options)
 
-        chart_hub = ChartHub(charts_list=[scatter_chart])
+        chart_hub = ChartHub(charts_list=[self.scatter_chart])
         chart_hub.create_js_file('examples/scatter_chart.js')
         chart_hub.create_html_file('examples/scatter_chart.html')
 
@@ -307,13 +307,65 @@ class TestPgChart(unittest.TestCase):
         'width': 900, 'height': 500
         }
 
-        stepped_area_chart = SteppedAreaChart(name='SteppedDecline', 
+        self.stepped_area_chart = SteppedAreaChart(name='SteppedDecline', 
             target_div='decline_stepped_area_div', 
             data=data, chart_options=options)
 
-        chart_hub = ChartHub(charts_list=[stepped_area_chart])
+        chart_hub = ChartHub(charts_list=[self.stepped_area_chart])
         chart_hub.create_js_file('examples/stepped_area_chart.js')
         chart_hub.create_html_file('examples/stepped_area_chart.html')
+
+    def test_gauge_chart(self):
+        data = Data(
+                columns_list=['Label', 'Value'],
+                types_list=[Data.STRING, Data.NUMBER],
+                values_list=[
+                    ['Memory', 80],
+                    ['CPU', 55],
+                    ['Network', 68]
+                ]
+            )
+
+        options = {
+        'redFrom': 90, 'redTo': 100,
+        'yellowFrom': 75, 'yellowTo': 90,
+        'minorTicks': 5,
+        'width': 400, 'height': 120
+        }
+
+        self.gauge_chart = GaugeChart(name='GaugeExample', 
+            target_div='gauge_chart_div', 
+            data=data, chart_options=options)
+
+        chart_hub = ChartHub(charts_list=[self.gauge_chart])
+        chart_hub.create_js_file('examples/gauge_chart.js')
+        chart_hub.create_html_file('examples/gauge_chart.html')
+
+    def test_geo_chart(self):
+        data = Data(
+                columns_list=['Country', 'Popularity'],
+                types_list=[Data.STRING, Data.NUMBER],
+                values_list=[
+                    ['Germany', 200],
+                    ['United States', 300],
+                    ['Brazil', 400],
+                    ['Canada', 500],
+                    ['France', 600],
+                    ['RU', 700]
+                ]
+            )
+
+        options = {
+        'width': 900, 'height': 500
+        }
+
+        self.geo_chart = GeoChart(name='GeoExample', 
+            target_div='geo_chart_div', 
+            data=data, chart_options=options)
+
+        chart_hub = ChartHub(charts_list=[self.geo_chart])
+        chart_hub.create_js_file('examples/geo_chart.js')
+        chart_hub.create_html_file('examples/geo_chart.html')
 
 
 if __name__ == '__main__':
